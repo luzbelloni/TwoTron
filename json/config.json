@@ -2,8 +2,6 @@
   "game": {
     "movingSpeed": 500,
     "disapearSpeed": 500
-
-    
   },
 
   "players": {

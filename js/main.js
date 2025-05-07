@@ -4,11 +4,10 @@ canvas.width = 800;
 canvas.height = 600;
 
 var pressedKey;
-document.addEventListener('keydown', (e)=>{
-      pressedKey = e.key;
-      console.log(pressedKey);
-    })
-
+document.addEventListener("keydown", (e) => {
+  pressedKey = e.key;
+  console.log(pressedKey);
+});
 
 //Main Game Class
 class BeamWars {
@@ -21,7 +20,6 @@ class BeamWars {
     this.player;
     this.pressedKey;
 
-    
     this.ctx = this.canvas.getContext("2d");
   }
   //start game
@@ -60,14 +58,13 @@ class BeamWars {
   drawBackground() {
     this.ctx.fillRect(0, 0, this.width, this.height);
   }
-  drawBorder(){
+  drawBorder() {
     this.ctx.save();
-    this.ctx.fillStyle = '#4e4e4e';
+    this.ctx.fillStyle = "#4e4e4e";
     this.ctx.fillRect(0, 0, 10, this.canvas.height);
     this.ctx.fillRect(0, this.canvas.height - 10, this.canvas.width, 10);
     this.ctx.fillRect(0, 0, this.canvas.width, 10);
     this.ctx.fillRect(this.canvas.width - 10, 0, 10, this.canvas.height);
-
 
     this.ctx.restore();
   }
@@ -83,20 +80,20 @@ class BeamWars {
     this.player.initLine();
   }
   handleKeyInput() {
-    if(pressedKey) {
-    if(pressedKey == 'w' || pressedKey == 'ArrowUp') {
-      this.player.direction = 'up';
+    if (pressedKey) {
+      if (pressedKey == "w" || pressedKey == "ArrowUp") {
+        this.player.direction = "up";
+      }
+      if (pressedKey == "a" || pressedKey == "ArrowLeft") {
+        this.player.direction = "left";
+      }
+      if (pressedKey == "s" || pressedKey == "ArrowDown") {
+        this.player.direction = "down";
+      }
+      if (pressedKey == "d" || pressedKey == "ArrowRight") {
+        this.player.direction = "right";
+      }
     }
-    if(pressedKey == 'a' || pressedKey == 'ArrowLeft') {
-      this.player.direction = 'left';
-    }
-    if(pressedKey == 's' || pressedKey == 'ArrowDown') {
-      this.player.direction = 'down';
-    }
-    if(pressedKey == 'd' || pressedKey == 'ArrowRight') {
-      this.player.direction = 'right';
-    }
-  }
   }
 
   erase() {
@@ -194,6 +191,3 @@ loadJSON.onload = function () {
   Game.start();
 };
 loadJSON.send();
-
-
-
