@@ -28,14 +28,26 @@ class BeamWars {
   }
   //start game
   start() {
-    this.player = new Beam(
-      this.config.players.one.pos.x,
-      this.config.players.one.pos.y - this.config.players.one.D.height,
-      this.config.players.one.D.width,
-      this.config.players.one.D.height,
-      this.config.players.one.color,
-      this.config.players.one.direction
-    );
+    if (this.role == "host") {
+      this.player = new Beam(
+        this.config.players.one.pos.x,
+        this.config.players.one.pos.y - this.config.players.one.D.height,
+        this.config.players.one.D.width,
+        this.config.players.one.D.height,
+        this.config.players.one.color,
+        this.config.players.one.direction
+      );
+    } else if (this.role == "join") {
+      this.player = new Beam(
+        this.config.players.two.pos.x,
+        this.config.players.two.pos.y - this.config.players.one.D.height,
+        this.config.players.two.D.width,
+        this.config.players.two.D.height,
+        this.config.players.two.color,
+        this.config.players.two.direction
+      );
+    }
+
     startButton.style.display = "none";
     this.started = true;
   }
@@ -271,12 +283,15 @@ loadJSON.send();
 var startButton = document.getElementById("start");
 var hostButton = document.getElementById("host");
 var joinButton = document.getElementById("join");
+var peerIdMenu = document.getElementById("peerIdMenu");
+var peerId = document.getElementById("peerId");
 
 hostButton.addEventListener("click", () => {
   Game.role = "host";
   hostButton.style.display = "none";
   joinButton.style.display = "none";
-  startButton.style.display = "initial";
+  peerIdMenu.style.display = "initial";
+  peerId.textContent = Game.peerId;
 });
 joinButton.addEventListener("click", () => {
   Game.role = "join";
@@ -287,4 +302,9 @@ joinButton.addEventListener("click", () => {
 
 startButton.addEventListener("click", () => {
   Game.start();
+});
+
+var peer = new Peer();
+peer.on("open", (id) => {
+  Game.peerId = id;
 });
