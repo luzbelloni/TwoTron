@@ -209,6 +209,8 @@ class Beam {
       this.line.pop();
       this.line.pop();
       this.line.pop();
+
+      this.usedFields = [];
     }
   }
   sendData() {
