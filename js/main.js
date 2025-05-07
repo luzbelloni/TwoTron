@@ -1,9 +1,7 @@
-var canvas = $("canvas")[0];
+var canvas = document.getElementById("canvas");
 
 canvas.width = 800;
 canvas.height = 600;
-
-
 
 //Main Game Class
 class BeamWars {
@@ -32,7 +30,6 @@ class Beam {
 }
 
 const Game = new BeamWars(canvas);
-
 
 //get data from Json file
 
