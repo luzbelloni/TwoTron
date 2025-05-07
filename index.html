@@ -5,11 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <link rel="icon" type="image/png" href="./assets/favicon.png" />
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
     </style>
     <link rel="stylesheet" href="css/style.css" />
-    <title>BeamWars</title>
+    <title>TwoTron</title>
   </head>
 
   <body>
@@ -21,6 +22,13 @@
         and send the ID and game url to a friend.
         <br />
         To join a game click on "Join Game" and enter the ID you recieved.
+        <br />
+        <br />
+        Use W A S D to control the direction your line is moving. When you
+        collide with an other player, you loose the round and the points you
+        gained. If you win, you get the points of the other player, wich he
+        gained. Your goal is to have the longer line to gain more points. The
+        game ends when the winner has more than 10000 points.
       </p>
       <h1 style="display: none">Start</h1>
       <h1 id="host">Host <br />Game</h1>
