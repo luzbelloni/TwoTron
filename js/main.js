@@ -292,6 +292,17 @@ hostButton.addEventListener("click", () => {
   joinButton.style.display = "none";
   peerIdMenu.style.display = "initial";
   peerId.textContent = Game.peerId;
+  peer.on("connection", function (conn) {
+    conn.on("data", function (data) {
+      // Will print 'hi!'
+      console.log(data);
+    });
+
+    console.log("connection!");
+
+    peerIdMenu.style.display = "none";
+    startButton.style.display = "initial";
+  });
 });
 joinButton.addEventListener("click", () => {
   Game.role = "join";
