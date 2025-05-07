@@ -15,9 +15,14 @@ class BeamWars {
     this.ctx.fillRect(0, 0, this.width, this.height);
   }
 
+  //create gameloop
+  gameLoop() {
+    return;
+  }
+
   //Load Game Config
   loadConfig(data) {
-    console.log(data);
+    return;
   }
 }
 
@@ -30,6 +35,13 @@ class Beam {
 }
 
 const Game = new BeamWars(canvas);
+
+// run gameloop
+function gameLoop(timestamp) {
+  Game.gameLoop(timestamp);
+  window.requestAnimationFrame(gameLoop);
+}
+window.requestAnimationFrame(gameLoop);
 
 //get data from Json file
 
