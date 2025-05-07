@@ -1,7 +1,7 @@
 {
   "players": {
     "one": {
-      "pos": { "x": 0, "y": 300 },
+      "pos": { "x": 10, "y": 300 },
       "D": { "width": 10, "height": 10 },
       "color": "red"
     },

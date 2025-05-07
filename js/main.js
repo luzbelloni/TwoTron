@@ -20,15 +20,18 @@ class BeamWars {
       this.config.players.one.pos.x,
       this.config.players.one.pos.y - this.config.players.one.D.height,
       this.config.players.one.D.width,
-      this.config.players.one.D.height
+      this.config.players.one.D.height,
+      this.config.players.one.color
     );
     this.started = true;
   }
 
   //create gameloop
   gameLoop() {
+    if(this.started){
     this.erase();
     this.draw();
+  }
   }
 
   //Load Game Config
@@ -37,9 +40,13 @@ class BeamWars {
   }
   draw() {
     this.drawBackground();
+    this.drawPlayer();
   }
   drawBackground() {
     this.ctx.fillRect(0, 0, this.width, this.height);
+  }
+  drawPlayer() {
+    this.player.draw(this.ctx);
   }
 
   erase() {
@@ -49,9 +56,18 @@ class BeamWars {
 
 //Player Class
 class Beam {
-  constructor(x, y, width, height) {
+  constructor(x, y, width, height, color) {
     this.pos = { X: x, Y: y };
     this.D = { width: width, height: height };
+    this.color = color;
+  }
+  draw(ctx) {
+    ctx.save();
+
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.pos.X, this.pos.Y, this.D.width, this.D.height);
+
+    ctx.restore();
   }
 }
 
