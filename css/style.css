@@ -93,3 +93,20 @@
   font-family: "Press Start 2P", cursive;
   display: none;
 }
+
+#scoreP1 {
+  color: red;
+  font-family: "Press Start 2P", cursive;
+}
+
+#scoreP2 {
+  font-family: "Press Start 2P", cursive;
+  color: blue;
+}
+
+#score {
+  display: flex;
+  gap: 500px;
+  position: relative;
+  /*display: none;*/
+}

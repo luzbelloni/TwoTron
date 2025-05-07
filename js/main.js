@@ -23,6 +23,7 @@ class BeamWars {
     this.player;
     this.pressedKey;
     this.role;
+    sessionStorage.setItem("score", 0);
 
     this.ctx = this.canvas.getContext("2d");
   }
@@ -57,6 +58,7 @@ class BeamWars {
     if (this.started) {
       this.updateCollisionState();
       this.updatePosition(timestamp);
+      this.displayScores();
       this.disapearLine(timestamp);
       this.sendData();
       this.handleKeyInput();
@@ -133,6 +135,10 @@ class BeamWars {
     this.player.initLine();
   }
 
+  displayScores() {
+    this.player.updateScoreDisplay(this.role);
+  }
+
   //removing lines
   disapearLine(timestamp) {
     //if (this.disapearLastTime == null) {
@@ -170,6 +176,7 @@ class BeamWars {
       this.player.tempPos.Y >= this.height - 10
     ) {
       this.over();
+      conn.send("dead");
     }
   }
 
@@ -205,6 +212,7 @@ class Beam {
     this.line = [];
     this.movingProcessActive = false;
     this.two = {};
+    this.roundScore = 0;
   }
   draw(ctx) {
     if (this.line.length > 0) {
@@ -222,6 +230,16 @@ class Beam {
       ctx.fillRect(this.two.pos.X, this.two.pos.Y, 10, 10);
 
       ctx.restore();
+    }
+  }
+
+  updateScoreDisplay(role) {
+    if (role == "host") {
+      document.getElementById("scoreP1").textContent = this.roundScore;
+      document.getElementById("scoreP2").textContent = this.two.roundScore;
+    } else if (role == "join") {
+      document.getElementById("scoreP2").textContent = this.roundScore;
+      document.getElementById("scoreP1").textContent = this.two.roundScore;
     }
   }
 
@@ -243,6 +261,8 @@ class Beam {
       pos: this.pos,
       line: this.line,
       color: this.color,
+      score: this.score,
+      roundScore: this.roundScore,
     };
     conn.send(JSON.stringify(sendingData));
   }
@@ -272,11 +292,13 @@ class Beam {
             this.usedFields[i][1] == this.pos.Y)
         ) {
           Game.over();
+          conn.send("dead");
           return;
         }
       }
 
       if (this.two.usedFields) {
+        console.log("data here");
         for (let i = 0; i < this.two.usedFields.length; i++) {
           if (
             (this.two.usedFields[i][0] == this.tempPos.X &&
@@ -285,6 +307,7 @@ class Beam {
               this.two.usedFields[i][1] == this.pos.Y)
           ) {
             Game.over();
+            conn.send("dead");
             return;
           }
         }
@@ -300,6 +323,8 @@ class Beam {
           this.color
         )
       );
+
+      this.roundScore += 10;
     }
   }
   initLine() {
@@ -309,6 +334,7 @@ class Beam {
   die() {
     if (this.dead == false) {
       //window.setTimeout(()=>{}, 0.5 * 1000);
+      conn.send("dead");
       this.dead = true;
     }
   }
@@ -327,13 +353,6 @@ class LineSegment {
     ctx.fillRect(this.pos.X, this.pos.Y, this.D.width, this.D.height);
 
     ctx.restore();
-  }
-}
-
-class HitBox {
-  constructor(x, y, width, height) {
-    this.pos = { X: x, Y: y };
-    this.D = { width: width, height: height };
   }
 }
 
@@ -374,22 +393,34 @@ hostButton.addEventListener("click", () => {
     conn = con;
 
     conn.on("data", function (data) {
-      let resievedData = JSON.parse(data);
-      if (resievedData.usedFields) {
-        Game.player.two.usedFields = resievedData.usedFields;
-        //console.log(Game.player.two.usedFields);
-      }
-      if (resievedData.line) {
-        Game.player.two.line = resievedData.line;
-        //console.log(Game.player.two.line);
-      }
-      if (resievedData.pos) {
-        Game.player.two.pos = resievedData.pos;
-        //console.log(Game.player.two.pos);
-      }
-      if (resievedData.color) {
-        Game.player.two.color = resievedData.color;
-        //console.log(Game.player.two.pos);
+      if (data == "dead") {
+        Game.over();
+      } else {
+        let resievedData = JSON.parse(data);
+        if (resievedData.usedFields) {
+          Game.player.two.usedFields = resievedData.usedFields;
+          //console.log(Game.player.two.usedFields);
+        }
+        if (resievedData.line) {
+          Game.player.two.line = resievedData.line;
+          //console.log(Game.player.two.line);
+        }
+        if (resievedData.pos) {
+          Game.player.two.pos = resievedData.pos;
+          //console.log(Game.player.two.pos);
+        }
+        if (resievedData.color) {
+          Game.player.two.color = resievedData.color;
+          //console.log(Game.player.two.pos);
+        }
+        if (resievedData.score) {
+          Game.player.two.score = resievedData.score;
+          //console.log(Game.player.two.pos);
+        }
+        if (resievedData.roundScore) {
+          Game.player.two.roundScore = resievedData.roundScore;
+          //console.log(Game.player.two.pos);
+        }
       }
     });
 
@@ -421,6 +452,8 @@ buttonJoin.addEventListener("click", () => {
     if (data == "start") {
       waitingScreen.style.display = "none";
       Game.start();
+    } else if (data == "dead") {
+      Game.over();
     } else {
       let resievedData = JSON.parse(data);
       if (resievedData.usedFields) {
@@ -437,6 +470,14 @@ buttonJoin.addEventListener("click", () => {
       }
       if (resievedData.color) {
         Game.player.two.color = resievedData.color;
+        //console.log(Game.player.two.pos);
+      }
+      if (resievedData.score) {
+        Game.player.two.score = resievedData.score;
+        //console.log(Game.player.two.pos);
+      }
+      if (resievedData.roundScore) {
+        Game.player.two.roundScore = resievedData.roundScore;
         //console.log(Game.player.two.pos);
       }
     }
