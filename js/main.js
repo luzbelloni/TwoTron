@@ -21,6 +21,7 @@ class BeamWars {
     this.player;
     this.pressedKey;
     this.role;
+    this.connSuccess = false;
     if (sessionStorage.getItem("score") == null)
       sessionStorage.setItem("score", 0);
 
@@ -215,7 +216,6 @@ class BeamWars {
     gameOver.style.display = "initial";
     if (this.role == "join") restartButton.style.visibility = "hidden";
     canvas.style.visibility = "hidden";*/
-    checkLineDisapeared();
   }
 }
 
@@ -385,9 +385,10 @@ class Beam {
         this.roundScore = 0;
       }
       conn.send("dead");
-      var sendingData = { roundScore: sessionStorage.getItem("score") };
+      var sendingData = { score: sessionStorage.getItem("score") };
       conn.send(JSON.stringify(sendingData));
       this.dead = true;
+      checkLineDisapeared();
     }
   }
 }
@@ -446,10 +447,15 @@ hostButton.addEventListener("click", () => {
   peerId.textContent = Game.peerId;
   peer.on("connection", function (con) {
     conn = con;
-
+    conn.send("connSuccess");
+    conn.on("error", (err) => {
+      console.error(err);
+    });
     conn.on("data", function (data) {
       if (data == "dead") {
         Game.over();
+      } else if (data == "connSuccess") {
+        Game.connSuccess = true;
       } else {
         let recievedData = JSON.parse(data);
         if (recievedData.usedFields) {
@@ -471,6 +477,7 @@ hostButton.addEventListener("click", () => {
         if (recievedData.score) {
           Game.player.two.score = recievedData.score;
           //console.log(Game.player.two.pos);
+          Game.displayScores();
         }
         if (recievedData.roundScore) {
           Game.player.two.roundScore = recievedData.roundScore;
@@ -515,12 +522,26 @@ startButton.addEventListener("click", () => {
 buttonJoin.addEventListener("click", () => {
   instructions.style.display = "none";
   conn = peer.connect(document.getElementById("idTextField").value);
+  peer.on("error", (err) => {
+    console.error(err.type);
+    if (err.type == "peer-unavailable") {
+      document.getElementById("waitingScreen").style.color = "red";
+      document.getElementById("waitingScreen").style.fontSize = "medium";
+      document.getElementById("waitingScreen").textContent =
+        'Error: Id "' +
+        document.getElementById("idTextField").value +
+        "\" doesn't exist!";
+    }
+  });
   joinInterface.style.display = "none";
   waitingScreen.style.display = "initial";
   conn.on("data", (data) => {
     if (data == "start") {
       waitingScreen.style.display = "none";
       Game.start();
+    }
+    if (data == "connSuccess") {
+      Game.connSuccess = true;
     } else if (data == "dead") {
       Game.over();
     } else {
@@ -544,6 +565,7 @@ buttonJoin.addEventListener("click", () => {
       if (recievedData.score) {
         Game.player.two.score = recievedData.score;
         //console.log(Game.player.two.pos);
+        Game.displayScores();
       }
       if (recievedData.roundScore) {
         Game.player.two.roundScore = recievedData.roundScore;
@@ -608,7 +630,7 @@ function checkLineDisapeared() {
           location.reload("true");
         });
         gameOver.style.display = "initial";
-
+        restartButton.style.visibility = "hidden";
         canvas.style.visibility = "hidden";
       } else {
         if (Game.player.loser == true && Game.role == "host") {
