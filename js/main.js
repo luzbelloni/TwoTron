@@ -49,8 +49,10 @@ class BeamWars {
         this.config.players.two.direction
       );
     }
-
+    gameOver.style.display = "none";
     startButton.style.display = "none";
+    canvas.style.visibility = "initial";
+    window.requestAnimationFrame(gameLoop);
     this.started = true;
   }
 
@@ -197,6 +199,23 @@ class BeamWars {
   }
   over() {
     this.player.die();
+
+    if (this.player.loser == true && this.role == "host") {
+      document.getElementById("gameOverWinner").textContent = "Player 2";
+    }
+    if (this.player.loser == true && this.role == "join") {
+      document.getElementById("gameOverWinner").textContent = "Player 1";
+    }
+    if (this.player.loser == false && this.role == "host") {
+      document.getElementById("gameOverWinner").textContent = "Player 1";
+    }
+    if (this.player.loser == false && this.role == "join") {
+      document.getElementById("gameOverWinner").textContent = "Player 2";
+    }
+
+    gameOver.style.display = "initial";
+    if (this.role == "join") restartButton.style.visibility = "hidden";
+    canvas.style.visibility = "hidden";
   }
 }
 
@@ -394,7 +413,6 @@ function gameLoop(timestamp) {
   Game.gameLoop(timestamp);
   window.requestAnimationFrame(gameLoop);
 }
-window.requestAnimationFrame(gameLoop);
 
 //get data from Json file
 
@@ -413,6 +431,13 @@ var buttonJoin = document.getElementById("joinButton");
 var peerIdMenu = document.getElementById("peerIdMenu");
 var peerId = document.getElementById("peerId");
 var waitingScreen = document.getElementById("waitingScreen");
+var gameOver = document.getElementById("gameOver");
+var restartButton = document.getElementById("restartButton");
+
+restartButton.addEventListener("click", () => {
+  conn.send("start");
+  Game.start();
+});
 
 hostButton.addEventListener("click", () => {
   Game.role = "host";
