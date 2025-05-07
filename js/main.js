@@ -6,7 +6,6 @@ canvas.height = 800;
 var pressedKey;
 document.addEventListener("keydown", (e) => {
   pressedKey = e.key;
-  //console.log(pressedKey);
 });
 
 //Main Game Class
@@ -122,12 +121,10 @@ class BeamWars {
     this.ctx.restore();
   }
 
-  //drawing player
   drawPlayer() {
     this.player.draw(this.ctx);
   }
 
-  //drawing line
   drawLines() {
     for (let i = 0; i < this.player.line.length; i++) {
       this.player.line[i].draw(this.ctx);
@@ -161,17 +158,9 @@ class BeamWars {
 
   //removing lines
   disapearLine(timestamp) {
-    //if (this.disapearLastTime == null) {
-    //this.disapearLastTime = timestamp;
-    //}
-    //if (timestamp - this.disapearLastTime >= this.config.game.disapearSpeed) {
     this.player.disapearLine();
-    //console.log(this.player.tempPos);
-    //this.disapearLastTime = timestamp;
-    //}
   }
 
-  //handle key inputs
   handleKeyInput() {
     if (pressedKey) {
       if (pressedKey == "w" || pressedKey == "ArrowUp") {
@@ -210,29 +199,11 @@ class BeamWars {
     } else if (timestamp - this.moveLastTime >= this.config.game.movingSpeed) {
       this.player.move();
 
-      //console.log(this.player.tempPos);
       this.moveLastTime = timestamp;
     }
   }
   over() {
     this.player.die();
-
-    /*if (this.player.loser == true && this.role == "host") {
-      document.getElementById("gameOverWinner").textContent = "Player 2";
-    }
-    if (this.player.loser == true && this.role == "join") {
-      document.getElementById("gameOverWinner").textContent = "Player 1";
-    }
-    if (this.player.loser == false && this.role == "host") {
-      document.getElementById("gameOverWinner").textContent = "Player 1";
-    }
-    if (this.player.loser == false && this.role == "join") {
-      document.getElementById("gameOverWinner").textContent = "Player 2";
-    }
-
-    gameOver.style.display = "initial";
-    if (this.role == "join") restartButton.style.visibility = "hidden";
-    canvas.style.visibility = "hidden";*/
   }
 }
 
@@ -279,12 +250,10 @@ class Beam {
       document.getElementById("scoreP2").textContent = parseInt(
         this.two.roundScore
       );
-      //console.log('display updated')
     } else if (role == "join") {
       document.getElementById("scoreP2").textContent =
         sessionStorage.getItem("score");
       document.getElementById("scoreP1").textContent = this.two.roundScore;
-      //console.log('display updated')
     }
   }
 
@@ -385,14 +354,9 @@ class Beam {
   }
   die() {
     if (this.dead == false) {
-      /*sessionStorage.setItem(
-        "score",
-        parseInt(sessionStorage.getItem("score"))
-      );*/
-      //window.setTimeout(()=>{}, 0.5 * 1000);
       if (this.loser == true) {
         var sendingData = { addScore: this.roundScore };
-        //console.log(sendingData);
+
         conn.send(JSON.stringify(sendingData));
         sessionStorage.setItem(
           "score",
@@ -479,45 +443,35 @@ hostButton.addEventListener("click", () => {
         let recievedData = JSON.parse(data);
         if (recievedData.usedFields) {
           Game.player.two.usedFields = recievedData.usedFields;
-          //console.log(Game.player.two.usedFields);
         }
         if (recievedData.line) {
           Game.player.two.line = recievedData.line;
-          //console.log(Game.player.two.line);
         }
         if (recievedData.pos) {
           Game.player.two.pos = recievedData.pos;
-          //console.log(Game.player.two.pos);
         }
         if (recievedData.color) {
           Game.player.two.color = recievedData.color;
-          //console.log(Game.player.two.pos);
         }
         if (recievedData.score) {
           Game.player.two.score = recievedData.score;
-          //console.log(Game.player.two.pos);
+
           Game.displayScores();
         }
         if (recievedData.roundScore) {
           Game.player.two.roundScore = recievedData.roundScore;
-          //console.log(Game.player.two.pos);
         }
         if (recievedData.addScore) {
-          //console.log(sessionStorage.getItem("score"));
           sessionStorage.setItem(
             "score",
             parseInt(sessionStorage.getItem("score")) +
               parseInt(recievedData.addScore)
           );
-          //console.log(recievedData.addScore);
-          //console.log(sessionStorage.getItem("score"));
+
           Game.displayScores();
-          //console.log(Game.player.two.pos);
         }
       }
     });
-
-    //console.log("connection!");
 
     instructions.style.display = "none";
     peerIdMenu.style.display = "none";
@@ -568,40 +522,32 @@ buttonJoin.addEventListener("click", () => {
       let recievedData = JSON.parse(data);
       if (recievedData.usedFields) {
         Game.player.two.usedFields = recievedData.usedFields;
-        //console.log(Game.player.two.usedFields);
       }
       if (recievedData.line) {
         Game.player.two.line = recievedData.line;
-        //console.log(Game.player.two.line);
       }
       if (recievedData.pos) {
         Game.player.two.pos = recievedData.pos;
-        //console.log(Game.player.two.pos);
       }
       if (recievedData.color) {
         Game.player.two.color = recievedData.color;
-        //console.log(Game.player.two.pos);
       }
       if (recievedData.score) {
         Game.player.two.score = recievedData.score;
-        //console.log(Game.player.two.pos);
+
         Game.displayScores();
       }
       if (recievedData.roundScore) {
         Game.player.two.roundScore = recievedData.roundScore;
-        //console.log(Game.player.two.pos);
       }
       if (recievedData.addScore) {
-        //console.log(sessionStorage.getItem("score"));
         sessionStorage.setItem(
           "score",
           parseInt(sessionStorage.getItem("score")) +
             parseInt(recievedData.addScore)
         );
-        //console.log(recievedData.addScore);
-        //console.log(sessionStorage.getItem("score"));
+
         Game.displayScores();
-        //console.log(Game.player.two.pos);
       }
     }
   });
