@@ -386,6 +386,7 @@ buttonJoin.addEventListener("click", () => {
   waitingScreen.style.display = "initial";
   conn.on("data", (data) => {
     if (data == "start") {
+      waitingScreen.style.display = "none";
       Game.start();
     } else {
       let resievedData = JSON.parse(data);
