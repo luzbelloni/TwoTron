@@ -64,6 +64,8 @@ class BeamWars {
       this.draw();
     }
   }
+
+  //sending Data to other player
   sendData() {
     this.player.sendData();
   }
@@ -72,15 +74,21 @@ class BeamWars {
   loadConfig(data) {
     this.config = data;
   }
+
+  //drawing game
   draw() {
     this.drawBackground();
     this.drawBorder();
     this.drawPlayer();
     this.drawLines();
   }
+
+  //drawing background
   drawBackground() {
     this.ctx.fillRect(0, 0, this.width, this.height);
   }
+
+  //drawing border
   drawBorder() {
     this.ctx.save();
     this.ctx.fillStyle = "#4e4e4e";
@@ -91,9 +99,13 @@ class BeamWars {
 
     this.ctx.restore();
   }
+
+  //drawing player
   drawPlayer() {
     this.player.draw(this.ctx);
   }
+
+  //drawing line
   drawLines() {
     for (let i = 0; i < this.player.line.length; i++) {
       this.player.line[i].draw(this.ctx);
@@ -115,9 +127,13 @@ class BeamWars {
       }
     }
   }
+
+  //make lines appear
   initLine() {
     this.player.initLine();
   }
+
+  //removing lines
   disapearLine(timestamp) {
     //if (this.disapearLastTime == null) {
     //this.disapearLastTime = timestamp;
@@ -128,6 +144,8 @@ class BeamWars {
     //this.disapearLastTime = timestamp;
     //}
   }
+
+  //handle key inputs
   handleKeyInput() {
     if (pressedKey) {
       if (pressedKey == "w" || pressedKey == "ArrowUp") {
