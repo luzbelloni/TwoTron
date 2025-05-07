@@ -69,7 +69,7 @@ class BeamWars {
     if (this.moveLastTime == null) {
       this.moveLastTime = timestamp;
     }
-    if (timestamp - this.moveLastTime >= this.config.game.speed) {
+    if (timestamp - this.moveLastTime >= this.config.game.movingSpeed) {
       this.player.move();
       //console.log(this.player.tempPos);
       this.moveLastTime = timestamp;
@@ -83,7 +83,7 @@ class Beam {
     this.pos = { X: x, Y: y };
     this.tempPos = { X: x, Y: y };
     this.D = { width: width, height: height };
-    this.speed = 10;
+    this.stepSpeed = 10;
     this.direction = "right";
     this.color = color;
     this.line = [];
@@ -109,16 +109,16 @@ class Beam {
   }
   move() {
     if (this.direction == "right") {
-      this.tempPos.X += this.speed;
+      this.tempPos.X += this.stepSpeed;
     }
     if (this.direction == "left") {
-      this.tempPos.X -= this.speed;
+      this.tempPos.X -= this.stepSpeed;
     }
     if (this.direction == "down") {
-      this.tempPos.Y += this.speed;
+      this.tempPos.Y += this.stepSpeed;
     }
     if (this.direction == "up") {
-      this.tempPos.Y -= this.speed;
+      this.tempPos.Y -= this.stepSpeed;
     }
   }
 }
