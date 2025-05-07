@@ -1,4 +1,4 @@
-#start {
+/*#start {
   width: 200px;
   height: 40px;
   color: green;
@@ -9,6 +9,15 @@
   top: -450px;
   left: 400px;
   font-family: "Press Start 2P", cursive;
+  display: none;
+}*/
+
+#start {
+  width: 130px;
+  height: 130px;
+  position: relative;
+  top: -500px;
+  left: 450px;
   display: none;
 }
 
@@ -109,4 +118,9 @@
   gap: 500px;
   position: relative;
   /*display: none;*/
+}
+
+
+#gameOver {
+  display: none;
 }
