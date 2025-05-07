@@ -1,3 +1,6 @@
+navigator.vibrate(200);
+
+
 var canvas = document.getElementById("canvas");
 
 canvas.width = 800;
@@ -6,7 +9,7 @@ canvas.height = 600;
 var pressedKey;
 document.addEventListener("keydown", (e) => {
   pressedKey = e.key;
-  console.log(pressedKey);
+  //console.log(pressedKey);
 });
 
 //Main Game Class
@@ -37,9 +40,10 @@ class BeamWars {
   //create gameloop
   gameLoop(timestamp) {
     if (this.started) {
-      this.move(timestamp);
+      this.updatePosition(timestamp);
       this.initLine();
       this.handleKeyInput();
+      this.updateCollisionState();
       this.erase();
       this.draw();
     }
@@ -95,11 +99,16 @@ class BeamWars {
       }
     }
   }
+  updateCollisionState(){
+    if(this.player.tempPos.X <= 0 || this.player.tempPos.X >= this.width - 10 || this.player.tempPos.Y <= 0 || this.player.tempPos.Y >= this.height - 10){
+      this.over();
+    }
+  }
 
   erase() {
     this.ctx.clearRect(0, 0, this.width, this.height);
   }
-  move(timestamp) {
+  updatePosition(timestamp) {
     if (this.moveLastTime == null) {
       this.moveLastTime = timestamp;
     }
@@ -108,6 +117,10 @@ class BeamWars {
       //console.log(this.player.tempPos);
       this.moveLastTime = timestamp;
     }
+  }
+  over(){
+    window.alert('Game Over');
+    location.reload(true);
   }
 }
 
