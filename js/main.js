@@ -544,7 +544,7 @@ buttonJoin.addEventListener("click", () => {
       document.getElementById("waitingScreen").style.color = "red";
       document.getElementById("waitingScreen").style.fontSize = "medium";
       document.getElementById("waitingScreen").textContent =
-        'Error: Id "' +
+        'Error: ID "' +
         document.getElementById("idTextField").value +
         "\" doesn't exist!";
     }
