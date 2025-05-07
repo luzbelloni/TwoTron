@@ -11,18 +11,27 @@ class BeamWars {
     this.height = this.canvas.height;
 
     this.ctx = this.canvas.getContext("2d");
-
-    this.ctx.fillRect(0, 0, this.width, this.height);
   }
 
   //create gameloop
   gameLoop() {
-    return;
+    this.erase();
+    this.draw();
   }
 
   //Load Game Config
   loadConfig(data) {
     return;
+  }
+  draw() {
+    this.drawBackground();
+  }
+  drawBackground() {
+    this.ctx.fillRect(0, 0, this.width, this.height);
+  }
+
+  erase() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
   }
 }
 
