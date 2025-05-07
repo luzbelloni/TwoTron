@@ -21,7 +21,7 @@ class BeamWars {
 
   //Load Game Config
   loadConfig(data) {
-    return;
+    this.config = data;
   }
   draw() {
     this.drawBackground();
