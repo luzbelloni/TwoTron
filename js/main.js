@@ -571,17 +571,54 @@ buttonJoin.addEventListener("click", () => {
 function checkLineDisapeared() {
   if (Game.player.line.length <= 0 || Game.player.two.line.length <= 0) {
     window.setTimeout(() => {
-      if (Game.player.loser == true && Game.role == "host") {
-        document.getElementById("gameOverWinner").textContent = "Player 2";
-      }
-      if (Game.player.loser == true && Game.role == "join") {
-        document.getElementById("gameOverWinner").textContent = "Player 1";
-      }
-      if (Game.player.loser == false && Game.role == "host") {
-        document.getElementById("gameOverWinner").textContent = "Player 1";
-      }
-      if (Game.player.loser == false && Game.role == "join") {
-        document.getElementById("gameOverWinner").textContent = "Player 2";
+      if (
+        parseInt(sessionStorage.getItem("score")) >= 10000 ||
+        parseInt(Game.player.two.score) >= 10000
+      ) {
+        if (
+          parseInt(sessionStorage.getItem("score")) <
+            parseInt(Game.player.two.roundScore) &&
+          Game.role == "host"
+        ) {
+          document.getElementById("gameOverWinner").textContent = "Player 2";
+        }
+        if (
+          parseInt(sessionStorage.getItem("score")) <
+            parseInt(Game.player.two.roundScore) &&
+          Game.role == "join"
+        ) {
+          document.getElementById("gameOverWinner").textContent = "Player 1";
+        }
+        if (
+          parseInt(sessionStorage.getItem("score")) >
+            parseInt(Game.player.two.roundScore) &&
+          Game.role == "host"
+        ) {
+          document.getElementById("gameOverWinner").textContent = "Player 1";
+        }
+        if (
+          parseInt(sessionStorage.getItem("score")) >
+            parseInt(Game.player.two.roundScore) &&
+          Game.role == "join"
+        ) {
+          document.getElementById("gameOverWinner").textContent = "Player 2";
+        }
+
+        document.getElementById("gameOverText2").textContent =
+          "has won the entire round";
+      } else {
+        if (Game.player.loser == true && Game.role == "host") {
+          document.getElementById("gameOverWinner").textContent = "Player 2";
+        }
+        if (Game.player.loser == true && Game.role == "join") {
+          document.getElementById("gameOverWinner").textContent = "Player 1";
+        }
+        if (Game.player.loser == false && Game.role == "host") {
+          document.getElementById("gameOverWinner").textContent = "Player 1";
+        }
+        if (Game.player.loser == false && Game.role == "join") {
+          document.getElementById("gameOverWinner").textContent = "Player 2";
+        }
       }
 
       gameOver.style.display = "initial";

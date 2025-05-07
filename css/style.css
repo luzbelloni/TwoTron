@@ -124,16 +124,17 @@
 }
 
 #gameOver {
+  text-align: center;
   position: relative;
   top: -700px;
-  left: 350px;
+  left: 0px;
   font-family: "Press Start 2P", cursive;
   display: none;
 }
 
 #restartButton {
   position: relative;
-  left: 75px;
+  left: 450px;
 
   width: 100px;
   height: 100px;
@@ -145,6 +146,7 @@
 }
 
 #instructions {
+  text-align: center;
   position: absolute;
   top: 200px;
   left: 60px;
