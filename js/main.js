@@ -196,8 +196,14 @@ class Beam {
       ctx.fillRect(this.pos.X, this.pos.Y, this.D.width, this.D.height);
 
       ctx.restore();
-
+    }
+    if (this.two.pos && this.two.color && this.two.line.length > 0) {
       ctx.save();
+
+      ctx.fillStyle = this.two.color;
+      ctx.fillRect(this.two.pos.X, this.two.pos.Y, 10, 10);
+
+      ctx.restore();
     }
   }
 
@@ -217,7 +223,14 @@ class Beam {
     var sendingData = { usedFields: this.usedFields };
     conn.send(JSON.stringify(sendingData));
 
+    var sendingData = { pos: this.pos };
+    conn.send(JSON.stringify(sendingData));
+
     var sendingData = { line: this.line };
+    conn.send(JSON.stringify(sendingData));
+    //console.log(this.tempPos);
+
+    var sendingData = { color: this.color };
     conn.send(JSON.stringify(sendingData));
     //console.log(this.tempPos);
   }
@@ -358,6 +371,14 @@ hostButton.addEventListener("click", () => {
         Game.player.two.line = resievedData.line;
         //console.log(Game.player.two.line);
       }
+      if (resievedData.pos) {
+        Game.player.two.pos = resievedData.pos;
+        //console.log(Game.player.two.pos);
+      }
+      if (resievedData.color) {
+        Game.player.two.color = resievedData.color;
+        //console.log(Game.player.two.pos);
+      }
     });
 
     console.log("connection!");
@@ -397,6 +418,14 @@ buttonJoin.addEventListener("click", () => {
       if (resievedData.line) {
         Game.player.two.line = resievedData.line;
         //console.log(Game.player.two.line);
+      }
+      if (resievedData.pos) {
+        Game.player.two.pos = resievedData.pos;
+        //console.log(Game.player.two.pos);
+      }
+      if (resievedData.color) {
+        Game.player.two.color = resievedData.color;
+        //console.log(Game.player.two.pos);
       }
     }
   });
