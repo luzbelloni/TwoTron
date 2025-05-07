@@ -53,11 +53,23 @@ class BeamWars {
   }
   draw() {
     this.drawBackground();
+    this.drawBorder();
     this.drawPlayer();
     this.drawLines();
   }
   drawBackground() {
     this.ctx.fillRect(0, 0, this.width, this.height);
+  }
+  drawBorder(){
+    this.ctx.save();
+    this.ctx.fillStyle = '#4e4e4e';
+    this.ctx.fillRect(0, 0, 10, this.canvas.height);
+    this.ctx.fillRect(0, this.canvas.height - 10, this.canvas.width, 10);
+    this.ctx.fillRect(0, 0, this.canvas.width, 10);
+    this.ctx.fillRect(this.canvas.width - 10, 0, 10, this.canvas.height);
+
+
+    this.ctx.restore();
   }
   drawPlayer() {
     this.player.draw(this.ctx);
