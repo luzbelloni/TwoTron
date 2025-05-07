@@ -42,10 +42,8 @@ class BeamWars {
     if (this.started) {
       this.updateCollisionState();
       this.updatePosition(timestamp);
-      this.initLine();
       this.disapearLine(timestamp);
       this.handleKeyInput();
-
       this.erase();
       this.draw();
     }
@@ -120,6 +118,17 @@ class BeamWars {
     ) {
       this.over();
     }
+/*
+    for(let i = this.player.line.length - 1; i > 0; i--) {
+      if(this.player.line[this.player.line.length - 1].pos.X == this.player.line[i].pos.X && this.player.line[this.player.line.length - 1].pos.Y == this.player.line[i].pos.Y && i != this.player.line.length - 1) {
+        console.log(i);
+        console.log(this.player.line[this.player.line.length - 1]);
+        console.log(this.player.line[i]);
+        console.log('collision detected')
+        this.over();
+      }
+    }
+    */
   }
 
   erase() {
@@ -134,6 +143,8 @@ class BeamWars {
       //console.log(this.player.tempPos);
       this.moveLastTime = timestamp;
     }
+
+    this.initLine();
   }
   over() {
     this.player.dead = true;
