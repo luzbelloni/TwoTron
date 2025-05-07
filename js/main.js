@@ -22,6 +22,7 @@ class BeamWars {
     this.started = false;
     this.player;
     this.pressedKey;
+    this.role;
 
     this.ctx = this.canvas.getContext("2d");
   }
@@ -268,6 +269,21 @@ loadJSON.onload = function () {
 loadJSON.send();
 
 var startButton = document.getElementById("start");
+var hostButton = document.getElementById("host");
+var joinButton = document.getElementById("join");
+
+hostButton.addEventListener("click", () => {
+  Game.role = "host";
+  hostButton.style.display = "none";
+  joinButton.style.display = "none";
+  startButton.style.display = "initial";
+});
+joinButton.addEventListener("click", () => {
+  Game.role = "join";
+  hostButton.style.display = "none";
+  joinButton.style.display = "none";
+  startButton.style.display = "initial";
+});
 
 startButton.addEventListener("click", () => {
   Game.start();
