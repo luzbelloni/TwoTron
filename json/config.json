@@ -1,6 +1,6 @@
 {
   "game": {
-    "movingSpeed": 70,
+    "movingSpeed": 50,
     "disapearSpeed": 0
   },
 

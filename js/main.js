@@ -58,7 +58,7 @@ class BeamWars {
   draw() {
     this.drawBackground();
     this.drawBorder();
-    this.drawPlayer();
+    //this.drawPlayer();
     this.drawLines();
   }
   drawBackground() {
@@ -175,6 +175,11 @@ class Beam {
   }
   disapearLine() {
     if (this.dead == true) {
+      this.line.pop();
+      this.line.pop();
+      this.line.pop();
+      this.line.pop();
+      this.line.pop();
       this.line.pop();
     }
   }
