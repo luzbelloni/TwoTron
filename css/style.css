@@ -56,3 +56,40 @@
   display: none;
   font-family: "Press Start 2P", cursive;
 }
+
+#joinInterface {
+  width: 200px;
+  height: 40px;
+  text-align: center;
+  position: relative;
+  top: -550px;
+  /*left: 100px;*/
+  display: none;
+  font-family: "Press Start 2P", cursive;
+}
+#idTextField {
+  position: relative;
+  left: 40%;
+}
+
+#joinButton {
+  width: 200px;
+  height: 40px;
+  color: green;
+  background-color: red;
+  border: 5px solid black;
+  text-align: center;
+  position: relative;
+  /*top: -450px;*/
+  left: 400px;
+  font-size: x-large;
+  font-family: "Press Start 2P", cursive;
+}
+
+#waitingScreen {
+  position: relative;
+  top: -450px;
+  left: 100px;
+  font-family: "Press Start 2P", cursive;
+  display: none;
+}

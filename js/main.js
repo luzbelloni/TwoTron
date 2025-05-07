@@ -283,8 +283,11 @@ loadJSON.send();
 var startButton = document.getElementById("start");
 var hostButton = document.getElementById("host");
 var joinButton = document.getElementById("join");
+var joinInterface = document.getElementById("joinInterface");
+var buttonJoin = document.getElementById("joinButton");
 var peerIdMenu = document.getElementById("peerIdMenu");
 var peerId = document.getElementById("peerId");
+var waitingScreen = document.getElementById("waitingScreen");
 
 hostButton.addEventListener("click", () => {
   Game.role = "host";
@@ -292,10 +295,11 @@ hostButton.addEventListener("click", () => {
   joinButton.style.display = "none";
   peerIdMenu.style.display = "initial";
   peerId.textContent = Game.peerId;
-  peer.on("connection", function (conn) {
+  peer.on("connection", function (con) {
+    conn = con;
+
     conn.on("data", function (data) {
-      // Will print 'hi!'
-      console.log(data);
+      return;
     });
 
     console.log("connection!");
@@ -308,11 +312,25 @@ joinButton.addEventListener("click", () => {
   Game.role = "join";
   hostButton.style.display = "none";
   joinButton.style.display = "none";
-  startButton.style.display = "initial";
+
+  document.getElementById("idTextField").value = "";
+  joinInterface.style.display = "initial";
 });
 
 startButton.addEventListener("click", () => {
+  conn.send("start");
   Game.start();
+});
+
+buttonJoin.addEventListener("click", () => {
+  var conn = peer.connect(document.getElementById("idTextField").value);
+  joinInterface.style.display = "none";
+  waitingScreen.style.display = "initial";
+  conn.on("data", (data) => {
+    if (data == "start") {
+      Game.start();
+    }
+  });
 });
 
 var peer = new Peer();
