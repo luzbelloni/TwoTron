@@ -15,5 +15,4 @@ class BeamWars {
   }
 }
 
-
 const Game = new BeamWars(canvas);
