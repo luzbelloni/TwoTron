@@ -16,7 +16,12 @@ class BeamWars {
   }
   //start game
   start() {
-    this.player = new Beam(this.config.players.one.pos.x, this.config.players.one.pos.y - this.config.players.one.D.height, this.config.players.one.D.width, this.config.players.one.D.height);
+    this.player = new Beam(
+      this.config.players.one.pos.x,
+      this.config.players.one.pos.y - this.config.players.one.D.height,
+      this.config.players.one.D.width,
+      this.config.players.one.D.height
+    );
     this.started = true;
   }
 
@@ -52,7 +57,6 @@ class Beam {
 
 const Game = new BeamWars(canvas);
 
-
 // run gameloop
 function gameLoop(timestamp) {
   Game.gameLoop(timestamp);
@@ -69,4 +73,3 @@ loadJSON.onload = function () {
   Game.start();
 };
 loadJSON.send();
-
