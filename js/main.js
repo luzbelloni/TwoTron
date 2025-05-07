@@ -69,7 +69,7 @@ class BeamWars {
     if (this.moveLastTime == null) {
       this.moveLastTime = timestamp;
     }
-    if (timestamp - this.moveLastTime >= 50) {
+    if (timestamp - this.moveLastTime >= this.config.game.speed) {
       this.player.move();
       //console.log(this.player.tempPos);
       this.moveLastTime = timestamp;
