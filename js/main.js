@@ -56,7 +56,7 @@ class BeamWars {
   draw() {
     this.drawBackground();
     this.drawBorder();
-    //this.drawPlayer();
+    this.drawPlayer();
     this.drawLines();
   }
   drawBackground() {
@@ -118,17 +118,6 @@ class BeamWars {
     ) {
       this.over();
     }
-/*
-    for(let i = this.player.line.length - 1; i > 0; i--) {
-      if(this.player.line[this.player.line.length - 1].pos.X == this.player.line[i].pos.X && this.player.line[this.player.line.length - 1].pos.Y == this.player.line[i].pos.Y && i != this.player.line.length - 1) {
-        console.log(i);
-        console.log(this.player.line[this.player.line.length - 1]);
-        console.log(this.player.line[i]);
-        console.log('collision detected')
-        this.over();
-      }
-    }
-    */
   }
 
   erase() {
@@ -137,14 +126,12 @@ class BeamWars {
   updatePosition(timestamp) {
     if (this.moveLastTime == null) {
       this.moveLastTime = timestamp;
-    }
-    if (timestamp - this.moveLastTime >= this.config.game.movingSpeed) {
+    } else if (timestamp - this.moveLastTime >= this.config.game.movingSpeed) {
       this.player.move();
+
       //console.log(this.player.tempPos);
       this.moveLastTime = timestamp;
     }
-
-    this.initLine();
   }
   over() {
     this.player.dead = true;
@@ -156,34 +143,26 @@ class Beam {
   constructor(x, y, width, height, color) {
     this.pos = { X: x, Y: y };
     this.tempPos = { X: x, Y: y };
+    this.usedFields = [];
     this.D = { width: width, height: height };
     this.stepSpeed = 10;
     this.dead = false;
     this.direction = "right";
     this.color = color;
     this.line = [];
+    this.movingProcessActive = false;
   }
   draw(ctx) {
-    ctx.save();
+    if (this.line.length > 0) {
+      ctx.save();
 
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.pos.X, this.pos.Y, this.D.width, this.D.height);
+      ctx.fillStyle = this.color;
+      ctx.fillRect(this.pos.X, this.pos.Y, this.D.width, this.D.height);
 
-    ctx.restore();
-  }
-  initLine() {
-    if (this.dead == false) {
-      this.line.push(
-        new LineSegment(
-          this.tempPos.X,
-          this.tempPos.Y,
-          this.D.width,
-          this.D.height,
-          this.color
-        )
-      );
+      ctx.restore();
     }
   }
+
   disapearLine() {
     if (this.dead == true) {
       this.line.pop();
@@ -208,6 +187,31 @@ class Beam {
       if (this.direction == "up") {
         this.tempPos.Y -= this.stepSpeed;
       }
+      for (let i = 0; i < this.usedFields.length; i++) {
+        if (
+          this.usedFields[i][0] == this.tempPos.X &&
+          this.usedFields[i][1] == this.tempPos.Y
+        ) {
+          Game.over();
+          return;
+        }
+      }
+
+      this.usedFields.push([this.tempPos.X, this.tempPos.Y]);
+      this.line.push(
+        new LineSegment(
+          this.tempPos.X,
+          this.tempPos.Y,
+          this.D.width,
+          this.D.height,
+          this.color
+        )
+      );
+      //console.log(this.tempPos);
+    }
+  }
+  initLine() {
+    if (this.dead == false && !this.usedFields.includes(this.tempPos)) {
     }
   }
 }
