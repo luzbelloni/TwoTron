@@ -20,6 +20,13 @@ Color Palletes;
 
 
 */
+#logo {
+  image-rendering: pixelated;
+  width: 128px;
+  height: 128px;
+  position: absolute;
+  left: 450px;
+}
 
 #start {
   width: 130px;

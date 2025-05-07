@@ -53,6 +53,7 @@ class BeamWars {
     pressedKey = undefined;
     gameOver.style.display = "none";
     startButton.style.display = "none";
+    logo.style.display = "none";
     canvas.style.visibility = "initial";
     window.requestAnimationFrame(gameLoop);
     this.started = true;
@@ -454,6 +455,7 @@ var gameOver = document.getElementById("gameOver");
 var restartButton = document.getElementById("restartButton");
 var roundWinner = document.getElementById("roundWinner");
 var instructions = document.getElementById("instructions");
+var logo = document.getElementById("logo");
 
 hostButton.addEventListener("click", () => {
   Game.role = "host";
