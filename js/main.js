@@ -35,6 +35,7 @@ class BeamWars {
       this.config.players.one.color,
       this.config.players.one.direction
     );
+    startButton.style.display = 'none';
     this.started = true;
   }
 
@@ -263,6 +264,12 @@ var loadJSON = new XMLHttpRequest();
 loadJSON.open("GET", "./json/config.json");
 loadJSON.onload = function () {
   Game.loadConfig(JSON.parse(loadJSON.responseText));
-  Game.start();
-};
+  
+  };
 loadJSON.send();
+
+var startButton = document.getElementById("start");
+
+startButton.addEventListener("click", ()=>{
+  Game.start();
+});
