@@ -459,6 +459,7 @@ hostButton.addEventListener("click", () => {
   Game.role = "host";
   hostButton.style.display = "none";
   joinButton.style.display = "none";
+  instructions.style.display = "none";
   peerIdMenu.style.display = "initial";
   peerId.textContent = Game.peerId;
   peer.on("connection", function (con) {
@@ -525,6 +526,7 @@ joinButton.addEventListener("click", () => {
   Game.role = "join";
   hostButton.style.display = "none";
   joinButton.style.display = "none";
+  instructions.style.display = "none";
 
   document.getElementById("idTextField").value = "";
   joinInterface.style.display = "initial";

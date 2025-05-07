@@ -42,6 +42,7 @@ Color Palletes;
   left: 400px;
   font-size: large;
   font-family: "Press Start 2P", cursive;
+  z-index: 1;
 }
 
 #join {
@@ -56,30 +57,34 @@ Color Palletes;
   left: 400px;
   font-size: large;
   font-family: "Press Start 2P", cursive;
+  z-index: 1;
 }
 
 #game {
   width: 1000px;
   height: 800px;
+  position: relative;
   border: 4px solid #000500;
   background-color: #31e981;
 }
 
 #peerIdMenu {
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   /*border: 4px solid black;*/
   text-align: center;
   position: relative;
-  top: -500px;
+  top: -550px;
+  background-color: red;
   /*left: 100px;*/
   display: none;
   font-family: "Press Start 2P", cursive;
 }
 
 #joinInterface {
-  width: 200px;
-  height: 40px;
+  width: 100%;
+  height: 100%;
+  /*background-color: red;*/
   text-align: center;
   position: relative;
   top: -550px;
@@ -89,6 +94,7 @@ Color Palletes;
 }
 
 #idTextField {
+  width: 200px;
   position: relative;
   left: 400px;
 }
@@ -108,9 +114,13 @@ Color Palletes;
 }
 
 #waitingScreen {
+  width: 100%;
+  height: 100%;
+  /*background-color: green;*/
+  text-align: center;
+  left: 125px;
   position: relative;
   top: -450px;
-  left: 100px;
   font-family: "Press Start 2P", cursive;
   display: none;
 }
@@ -133,10 +143,15 @@ Color Palletes;
 }
 
 #gameOver {
-  text-align: center;
+  width: 100%;
+  height: 100%;
+
   position: relative;
   top: -700px;
-  left: 0px;
+
+  /*background-color: blue;*/
+  text-align: center;
+
   font-family: "Press Start 2P", cursive;
   display: none;
 }
@@ -147,11 +162,6 @@ Color Palletes;
 
   width: 100px;
   height: 100px;
-}
-
-#roundOver {
-  font-family: "Press Start 2P", cursive;
-  display: none;
 }
 
 #instructions {
