@@ -3,17 +3,28 @@
     "movingSpeed": 50,
     "disapearSpeed": 0
   },
-
   "players": {
     "one": {
-      "pos": { "x": 10, "y": 400 },
-      "D": { "width": 10, "height": 10 },
+      "pos": {
+        "x": 10,
+        "y": 400
+      },
+      "D": {
+        "width": 10,
+        "height": 10
+      },
       "direction": "right",
       "color": "red"
     },
     "two": {
-      "pos": { "x": 980, "y": 400 },
-      "D": { "width": 10, "height": 10 },
+      "pos": {
+        "x": 980,
+        "y": 400
+      },
+      "D": {
+        "width": 10,
+        "height": 10
+      },
       "direction": "left",
       "color": "blue"
     }

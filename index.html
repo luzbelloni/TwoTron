@@ -11,10 +11,12 @@
     <link rel="stylesheet" href="css/style.css" />
     <title>BeamWars</title>
   </head>
+
   <body>
     <div id="game">
       <canvas alt="gamescreen" id="canvas">canvas not supportet :(</canvas>
       <img id="start" src="assets/start.png" alt="" />
+      <p id="instructions">To host a game click on "Host Game" and send the id you get to a friend. <br> To join a game click on "Join Game" and enter an id</p>
       <h1 style="display: none">Start</h1>
       <h1 id="host">Host <br />Game</h1>
       <h1 id="join">Join <br />Game</h1>
@@ -43,6 +45,11 @@
         <h1 id="gameOverText2">has won!</h1>
         <br />
         <img src="assets/restart.png" alt="restart" id="restartButton" />
+      </div>
+      <div id="roundOver">
+        <h1 id="roundWinner"></h1>
+        <br />
+        <h1>has won the entire round</h1>
       </div>
     </div>
 

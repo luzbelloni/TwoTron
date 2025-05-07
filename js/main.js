@@ -1,5 +1,3 @@
-navigator.vibrate(200);
-
 var canvas = document.getElementById("canvas");
 
 canvas.width = 1000;
@@ -49,6 +47,7 @@ class BeamWars {
         this.config.players.two.direction
       );
     }
+    pressedKey = undefined;
     gameOver.style.display = "none";
     startButton.style.display = "none";
     canvas.style.visibility = "initial";
@@ -200,7 +199,7 @@ class BeamWars {
   over() {
     this.player.die();
 
-    if (this.player.loser == true && this.role == "host") {
+    /*if (this.player.loser == true && this.role == "host") {
       document.getElementById("gameOverWinner").textContent = "Player 2";
     }
     if (this.player.loser == true && this.role == "join") {
@@ -215,7 +214,8 @@ class BeamWars {
 
     gameOver.style.display = "initial";
     if (this.role == "join") restartButton.style.visibility = "hidden";
-    canvas.style.visibility = "hidden";
+    canvas.style.visibility = "hidden";*/
+    checkLineDisapeared();
   }
 }
 
@@ -375,7 +375,7 @@ class Beam {
       //window.setTimeout(()=>{}, 0.5 * 1000);
       if (this.loser == true) {
         var sendingData = { addScore: this.roundScore };
-        console.log(sendingData);
+        //console.log(sendingData);
         conn.send(JSON.stringify(sendingData));
         sessionStorage.setItem(
           "score",
@@ -433,6 +433,8 @@ var peerId = document.getElementById("peerId");
 var waitingScreen = document.getElementById("waitingScreen");
 var gameOver = document.getElementById("gameOver");
 var restartButton = document.getElementById("restartButton");
+var roundWinner = document.getElementById("roundWinner");
+var instructions = document.getElementById("instructions");
 
 restartButton.addEventListener("click", () => {
   conn.send("start");
@@ -478,14 +480,14 @@ hostButton.addEventListener("click", () => {
           //console.log(Game.player.two.pos);
         }
         if (recievedData.addScore) {
-          console.log(sessionStorage.getItem("score"));
+          //console.log(sessionStorage.getItem("score"));
           sessionStorage.setItem(
             "score",
             parseInt(sessionStorage.getItem("score")) +
               parseInt(recievedData.addScore)
           );
-          console.log(recievedData.addScore);
-          console.log(sessionStorage.getItem("score"));
+          //console.log(recievedData.addScore);
+          //console.log(sessionStorage.getItem("score"));
           Game.displayScores();
           //console.log(Game.player.two.pos);
         }
@@ -494,6 +496,7 @@ hostButton.addEventListener("click", () => {
 
     //console.log("connection!");
 
+    instructions.style.display = "none";
     peerIdMenu.style.display = "none";
     startButton.style.display = "initial";
   });
@@ -513,6 +516,7 @@ startButton.addEventListener("click", () => {
 });
 
 buttonJoin.addEventListener("click", () => {
+  instructions.style.display = "none";
   conn = peer.connect(document.getElementById("idTextField").value);
   joinInterface.style.display = "none";
   waitingScreen.style.display = "initial";
@@ -549,20 +553,46 @@ buttonJoin.addEventListener("click", () => {
         //console.log(Game.player.two.pos);
       }
       if (recievedData.addScore) {
-        console.log(sessionStorage.getItem("score"));
+        //console.log(sessionStorage.getItem("score"));
         sessionStorage.setItem(
           "score",
           parseInt(sessionStorage.getItem("score")) +
             parseInt(recievedData.addScore)
         );
-        console.log(recievedData.addScore);
-        console.log(sessionStorage.getItem("score"));
+        //console.log(recievedData.addScore);
+        //console.log(sessionStorage.getItem("score"));
         Game.displayScores();
         //console.log(Game.player.two.pos);
       }
     }
   });
 });
+
+function checkLineDisapeared() {
+  if (Game.player.line.length <= 0 || Game.player.two.line.length <= 0) {
+    window.setTimeout(() => {
+      if (Game.player.loser == true && Game.role == "host") {
+        document.getElementById("gameOverWinner").textContent = "Player 2";
+      }
+      if (Game.player.loser == true && Game.role == "join") {
+        document.getElementById("gameOverWinner").textContent = "Player 1";
+      }
+      if (Game.player.loser == false && Game.role == "host") {
+        document.getElementById("gameOverWinner").textContent = "Player 1";
+      }
+      if (Game.player.loser == false && Game.role == "join") {
+        document.getElementById("gameOverWinner").textContent = "Player 2";
+      }
+
+      gameOver.style.display = "initial";
+      if (Game.role == "join") restartButton.style.visibility = "hidden";
+      canvas.style.visibility = "hidden";
+    }, 1000 * 0.2);
+    Game.started = false;
+  } else {
+    window.requestAnimationFrame(checkLineDisapeared);
+  }
+}
 
 var peer = new Peer();
 peer.on("open", (id) => {
