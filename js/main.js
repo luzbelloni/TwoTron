@@ -238,19 +238,13 @@ class Beam {
     }
   }
   sendData() {
-    var sendingData = { usedFields: this.usedFields };
+    var sendingData = {
+      usedFields: this.usedFields,
+      pos: this.pos,
+      line: this.line,
+      color: this.color,
+    };
     conn.send(JSON.stringify(sendingData));
-
-    var sendingData = { pos: this.pos };
-    conn.send(JSON.stringify(sendingData));
-
-    var sendingData = { line: this.line };
-    conn.send(JSON.stringify(sendingData));
-    //console.log(this.tempPos);
-
-    var sendingData = { color: this.color };
-    conn.send(JSON.stringify(sendingData));
-    //console.log(this.tempPos);
   }
   move() {
     if (this.dead == false) {
