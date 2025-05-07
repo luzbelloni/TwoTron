@@ -1,6 +1,5 @@
 navigator.vibrate(200);
 
-
 var canvas = document.getElementById("canvas");
 
 canvas.width = 800;
@@ -19,6 +18,7 @@ class BeamWars {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.moveLastTime = null;
+    this.disapearLastTime = null;
     this.started = false;
     this.player;
     this.pressedKey;
@@ -40,10 +40,12 @@ class BeamWars {
   //create gameloop
   gameLoop(timestamp) {
     if (this.started) {
+      this.updateCollisionState();
       this.updatePosition(timestamp);
       this.initLine();
+      this.disapearLine(timestamp);
       this.handleKeyInput();
-      this.updateCollisionState();
+      
       this.erase();
       this.draw();
     }
@@ -83,6 +85,16 @@ class BeamWars {
   initLine() {
     this.player.initLine();
   }
+  disapearLine(timestamp) {
+    //if (this.disapearLastTime == null) {
+      //this.disapearLastTime = timestamp;
+    //}
+    //if (timestamp - this.disapearLastTime >= this.config.game.disapearSpeed) {
+      this.player.disapearLine();
+      //console.log(this.player.tempPos);
+      //this.disapearLastTime = timestamp;
+    //}
+  }
   handleKeyInput() {
     if (pressedKey) {
       if (pressedKey == "w" || pressedKey == "ArrowUp") {
@@ -99,8 +111,13 @@ class BeamWars {
       }
     }
   }
-  updateCollisionState(){
-    if(this.player.tempPos.X <= 0 || this.player.tempPos.X >= this.width - 10 || this.player.tempPos.Y <= 0 || this.player.tempPos.Y >= this.height - 10){
+  updateCollisionState() {
+    if (
+      this.player.tempPos.X <= 0 ||
+      this.player.tempPos.X >= this.width - 10 ||
+      this.player.tempPos.Y <= 0 ||
+      this.player.tempPos.Y >= this.height - 10
+    ) {
       this.over();
     }
   }
@@ -118,9 +135,8 @@ class BeamWars {
       this.moveLastTime = timestamp;
     }
   }
-  over(){
-    window.alert('Game Over');
-    location.reload(true);
+  over() {
+    this.player.dead = true;
   }
 }
 
@@ -131,6 +147,7 @@ class Beam {
     this.tempPos = { X: x, Y: y };
     this.D = { width: width, height: height };
     this.stepSpeed = 10;
+    this.dead = false;
     this.direction = "right";
     this.color = color;
     this.line = [];
@@ -144,17 +161,25 @@ class Beam {
     ctx.restore();
   }
   initLine() {
-    this.line.push(
-      new LineSegment(
-        this.tempPos.X,
-        this.tempPos.Y,
-        this.D.width,
-        this.D.height,
-        this.color
-      )
-    );
+    if (this.dead == false) {
+      this.line.push(
+        new LineSegment(
+          this.tempPos.X,
+          this.tempPos.Y,
+          this.D.width,
+          this.D.height,
+          this.color
+        )
+      );
+    }
+  }
+  disapearLine() {
+    if (this.dead == true) {
+      this.line.pop();
+    }
   }
   move() {
+    if(this.dead == false) {
     if (this.direction == "right") {
       this.tempPos.X += this.stepSpeed;
     }
@@ -168,6 +193,7 @@ class Beam {
       this.tempPos.Y -= this.stepSpeed;
     }
   }
+}
 }
 
 class LineSegment {

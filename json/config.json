@@ -1,7 +1,7 @@
 {
   "game": {
     "movingSpeed": 70,
-    "disapearSpeed": 500
+    "disapearSpeed": 0
   },
 
   "players": {
