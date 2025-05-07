@@ -9,32 +9,34 @@
   top: -450px;
   left: 400px;
   font-family: "Press Start 2P", cursive;
+  display: none;
 }
 
 #host {
-    width: 200px;
-    height: 40px;
-    color: green;
-    background-color: red;
-    border: 5px solid black;
-    text-align: center;
-    position: relative;
-    top: -450px;
-    left: 400px;
-    font-size:large;
-    font-family: "Press Start 2P", cursive; 
+  width: 200px;
+  height: 40px;
+  color: green;
+  background-color: red;
+  border: 5px solid black;
+  text-align: center;
+  position: relative;
+  top: -450px;
+  left: 400px;
+  font-size: large;
+  font-family: "Press Start 2P", cursive;
 }
 #join {
-    width: 200px;
-    height: 40px;
-    color: green;
-    background-color: red;
-    border: 5px solid black;
-    text-align: center;
-    position: relative;
-    top: -450px;
-    left: 400px;
-    font-family: "Press Start 2P", cursive;
+  width: 200px;
+  height: 40px;
+  color: green;
+  background-color: red;
+  border: 5px solid black;
+  text-align: center;
+  position: relative;
+  top: -450px;
+  left: 400px;
+  font-size: large;
+  font-family: "Press Start 2P", cursive;
 }
 
 #game {
