@@ -9,8 +9,15 @@ class BeamWars {
     this.canvas = canvas;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
+    this.started = false;
+    this.player;
 
     this.ctx = this.canvas.getContext("2d");
+  }
+  //start game
+  start() {
+    this.player = new Beam(this.config.players.one.pos.x, this.config.players.one.pos.y - this.config.players.one.D.height, this.config.players.one.D.width, this.config.players.one.D.height);
+    this.started = true;
   }
 
   //create gameloop
@@ -45,6 +52,7 @@ class Beam {
 
 const Game = new BeamWars(canvas);
 
+
 // run gameloop
 function gameLoop(timestamp) {
   Game.gameLoop(timestamp);
@@ -58,5 +66,7 @@ var loadJSON = new XMLHttpRequest();
 loadJSON.open("GET", "./json/config.json");
 loadJSON.onload = function () {
   Game.loadConfig(JSON.parse(loadJSON.responseText));
+  Game.start();
 };
 loadJSON.send();
+
