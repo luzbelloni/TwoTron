@@ -385,6 +385,8 @@ class Beam {
         this.roundScore = 0;
       }
       conn.send("dead");
+      var sendingData = { roundScore: sessionStorage.getItem("score") };
+      conn.send(JSON.stringify(sendingData));
       this.dead = true;
     }
   }
@@ -605,6 +607,9 @@ function checkLineDisapeared() {
         restartButton.addEventListener("click", () => {
           location.reload("true");
         });
+        gameOver.style.display = "initial";
+
+        canvas.style.visibility = "hidden";
       } else {
         if (Game.player.loser == true && Game.role == "host") {
           document.getElementById("gameOverWinner").textContent = "Player 2";
@@ -623,11 +628,10 @@ function checkLineDisapeared() {
           Game.start();
         });
         if (Game.role == "join") restartButton.style.visibility = "hidden";
+        gameOver.style.display = "initial";
+
+        canvas.style.visibility = "hidden";
       }
-
-      gameOver.style.display = "initial";
-
-      canvas.style.visibility = "hidden";
     }, 1000 * 0.2);
     Game.started = false;
   } else {
