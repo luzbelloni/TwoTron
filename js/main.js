@@ -90,13 +90,18 @@ class BeamWars {
 
   //drawing background
   drawBackground() {
+    this.ctx.save();
+
+    this.ctx.fillStyle = "#000500";
     this.ctx.fillRect(0, 0, this.width, this.height);
+
+    this.ctx.restore();
   }
 
   //drawing border
   drawBorder() {
     this.ctx.save();
-    this.ctx.fillStyle = "#4e4e4e";
+    this.ctx.fillStyle = "#697268";
     this.ctx.fillRect(0, 0, 10, this.canvas.height);
     this.ctx.fillRect(0, this.canvas.height - 10, this.canvas.width, 10);
     this.ctx.fillRect(0, 0, this.canvas.width, 10);
