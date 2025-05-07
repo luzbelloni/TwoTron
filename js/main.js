@@ -58,10 +58,14 @@ class BeamWars {
       this.updateCollisionState();
       this.updatePosition(timestamp);
       this.disapearLine(timestamp);
+      this.sendData();
       this.handleKeyInput();
       this.erase();
       this.draw();
     }
+  }
+  sendData() {
+    this.player.sendData();
   }
 
   //Load Game Config
@@ -93,6 +97,22 @@ class BeamWars {
   drawLines() {
     for (let i = 0; i < this.player.line.length; i++) {
       this.player.line[i].draw(this.ctx);
+    }
+
+    if (this.player.two.line) {
+      for (let i = 0; i < this.player.two.line.length; i++) {
+        this.ctx.save();
+        this.ctx.fillStyle = this.player.two.line[i].color;
+        this.ctx.fillRect(
+          this.player.two.line[i].pos.X,
+          this.player.two.line[i].pos.Y,
+          this.player.two.line[i].D.width,
+          this.player.two.line[i].D.height
+        );
+        this.ctx.restore();
+
+        //console.log(this.player.two.line);
+      }
     }
   }
   initLine() {
@@ -166,6 +186,7 @@ class Beam {
     this.color = color;
     this.line = [];
     this.movingProcessActive = false;
+    this.two = {};
   }
   draw(ctx) {
     if (this.line.length > 0) {
@@ -175,6 +196,8 @@ class Beam {
       ctx.fillRect(this.pos.X, this.pos.Y, this.D.width, this.D.height);
 
       ctx.restore();
+
+      ctx.save();
     }
   }
 
@@ -187,6 +210,14 @@ class Beam {
       this.line.pop();
       this.line.pop();
     }
+  }
+  sendData() {
+    var sendingData = { usedFields: this.usedFields };
+    conn.send(JSON.stringify(sendingData));
+
+    var sendingData = { line: this.line };
+    conn.send(JSON.stringify(sendingData));
+    //console.log(this.tempPos);
   }
   move() {
     if (this.dead == false) {
@@ -202,6 +233,10 @@ class Beam {
       if (this.direction == "up") {
         this.tempPos.Y -= this.stepSpeed;
       }
+
+      var sendingData = { tempPos: this.tempPos };
+      conn.send(JSON.stringify(sendingData));
+
       for (let i = 0; i < this.usedFields.length; i++) {
         if (
           (this.usedFields[i][0] == this.tempPos.X &&
@@ -211,6 +246,20 @@ class Beam {
         ) {
           Game.over();
           return;
+        }
+      }
+
+      if (this.two.usedFields) {
+        for (let i = 0; i < this.two.usedFields.length; i++) {
+          if (
+            (this.two.usedFields[i][0] == this.tempPos.X &&
+              this.two.usedFields[i][1] == this.tempPos.Y) ||
+            (this.two.usedFields[i][0] == this.pos.X &&
+              this.two.usedFields[i][1] == this.pos.Y)
+          ) {
+            Game.over();
+            return;
+          }
         }
       }
 
@@ -224,7 +273,6 @@ class Beam {
           this.color
         )
       );
-      //console.log(this.tempPos);
     }
   }
   initLine() {
@@ -299,7 +347,15 @@ hostButton.addEventListener("click", () => {
     conn = con;
 
     conn.on("data", function (data) {
-      return;
+      let resievedData = JSON.parse(data);
+      if (resievedData.usedFields) {
+        Game.player.two.usedFields = resievedData.usedFields;
+        //console.log(Game.player.two.usedFields);
+      }
+      if (resievedData.line) {
+        Game.player.two.line = resievedData.line;
+        //console.log(Game.player.two.line);
+      }
     });
 
     console.log("connection!");
@@ -323,12 +379,22 @@ startButton.addEventListener("click", () => {
 });
 
 buttonJoin.addEventListener("click", () => {
-  var conn = peer.connect(document.getElementById("idTextField").value);
+  conn = peer.connect(document.getElementById("idTextField").value);
   joinInterface.style.display = "none";
   waitingScreen.style.display = "initial";
   conn.on("data", (data) => {
     if (data == "start") {
       Game.start();
+    } else {
+      let resievedData = JSON.parse(data);
+      if (resievedData.usedFields) {
+        Game.player.two.usedFields = resievedData.usedFields;
+        //console.log(Game.player.two.usedFields);
+      }
+      if (resievedData.line) {
+        Game.player.two.line = resievedData.line;
+        //console.log(Game.player.two.line);
+      }
     }
   });
 });
