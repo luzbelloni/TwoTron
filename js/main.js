@@ -23,7 +23,8 @@ class BeamWars {
     this.player;
     this.pressedKey;
     this.role;
-    sessionStorage.setItem("score", 0);
+    if (sessionStorage.getItem("score") == null)
+      sessionStorage.setItem("score", 0);
 
     this.ctx = this.canvas.getContext("2d");
   }
@@ -56,9 +57,9 @@ class BeamWars {
   //create gameloop
   gameLoop(timestamp) {
     if (this.started) {
+      this.displayScores();
       this.updateCollisionState();
       this.updatePosition(timestamp);
-      this.displayScores();
       this.disapearLine(timestamp);
       this.sendData();
       this.handleKeyInput();
@@ -176,6 +177,7 @@ class BeamWars {
       this.player.tempPos.Y >= this.height - 10
     ) {
       this.over();
+      this.player.loser = true;
       conn.send("dead");
     }
   }
@@ -213,6 +215,7 @@ class Beam {
     this.movingProcessActive = false;
     this.two = {};
     this.roundScore = 0;
+    this.loser = false;
   }
   draw(ctx) {
     if (this.line.length > 0) {
@@ -235,11 +238,17 @@ class Beam {
 
   updateScoreDisplay(role) {
     if (role == "host") {
-      document.getElementById("scoreP1").textContent = this.roundScore;
-      document.getElementById("scoreP2").textContent = this.two.roundScore;
+      document.getElementById("scoreP1").textContent =
+        sessionStorage.getItem("score");
+      document.getElementById("scoreP2").textContent = parseInt(
+        this.two.roundScore
+      );
+      //console.log('display updated')
     } else if (role == "join") {
-      document.getElementById("scoreP2").textContent = this.roundScore;
+      document.getElementById("scoreP2").textContent =
+        sessionStorage.getItem("score");
       document.getElementById("scoreP1").textContent = this.two.roundScore;
+      //console.log('display updated')
     }
   }
 
@@ -261,8 +270,8 @@ class Beam {
       pos: this.pos,
       line: this.line,
       color: this.color,
-      score: this.score,
-      roundScore: this.roundScore,
+      score: sessionStorage.getItem("score"),
+      roundScore: sessionStorage.getItem("score"),
     };
     conn.send(JSON.stringify(sendingData));
   }
@@ -291,14 +300,15 @@ class Beam {
           (this.usedFields[i][0] == this.pos.X &&
             this.usedFields[i][1] == this.pos.Y)
         ) {
+          this.loser = true;
           Game.over();
           conn.send("dead");
+
           return;
         }
       }
 
       if (this.two.usedFields) {
-        console.log("data here");
         for (let i = 0; i < this.two.usedFields.length; i++) {
           if (
             (this.two.usedFields[i][0] == this.tempPos.X &&
@@ -306,8 +316,10 @@ class Beam {
             (this.two.usedFields[i][0] == this.pos.X &&
               this.two.usedFields[i][1] == this.pos.Y)
           ) {
+            this.loser = true;
             Game.over();
             conn.send("dead");
+
             return;
           }
         }
@@ -325,6 +337,10 @@ class Beam {
       );
 
       this.roundScore += 10;
+      sessionStorage.setItem(
+        "score",
+        parseInt(sessionStorage.getItem("score")) + 10
+      );
     }
   }
   initLine() {
@@ -333,7 +349,22 @@ class Beam {
   }
   die() {
     if (this.dead == false) {
+      /*sessionStorage.setItem(
+        "score",
+        parseInt(sessionStorage.getItem("score"))
+      );*/
       //window.setTimeout(()=>{}, 0.5 * 1000);
+      if (this.loser == true) {
+        var sendingData = { addScore: this.roundScore };
+        console.log(sendingData);
+        conn.send(JSON.stringify(sendingData));
+        sessionStorage.setItem(
+          "score",
+          parseInt(sessionStorage.getItem("score")) - parseInt(this.roundScore)
+        );
+        this.updateScoreDisplay();
+        this.roundScore = 0;
+      }
       conn.send("dead");
       this.dead = true;
     }
@@ -396,35 +427,47 @@ hostButton.addEventListener("click", () => {
       if (data == "dead") {
         Game.over();
       } else {
-        let resievedData = JSON.parse(data);
-        if (resievedData.usedFields) {
-          Game.player.two.usedFields = resievedData.usedFields;
+        let recievedData = JSON.parse(data);
+        if (recievedData.usedFields) {
+          Game.player.two.usedFields = recievedData.usedFields;
           //console.log(Game.player.two.usedFields);
         }
-        if (resievedData.line) {
-          Game.player.two.line = resievedData.line;
+        if (recievedData.line) {
+          Game.player.two.line = recievedData.line;
           //console.log(Game.player.two.line);
         }
-        if (resievedData.pos) {
-          Game.player.two.pos = resievedData.pos;
+        if (recievedData.pos) {
+          Game.player.two.pos = recievedData.pos;
           //console.log(Game.player.two.pos);
         }
-        if (resievedData.color) {
-          Game.player.two.color = resievedData.color;
+        if (recievedData.color) {
+          Game.player.two.color = recievedData.color;
           //console.log(Game.player.two.pos);
         }
-        if (resievedData.score) {
-          Game.player.two.score = resievedData.score;
+        if (recievedData.score) {
+          Game.player.two.score = recievedData.score;
           //console.log(Game.player.two.pos);
         }
-        if (resievedData.roundScore) {
-          Game.player.two.roundScore = resievedData.roundScore;
+        if (recievedData.roundScore) {
+          Game.player.two.roundScore = recievedData.roundScore;
+          //console.log(Game.player.two.pos);
+        }
+        if (recievedData.addScore) {
+          console.log(sessionStorage.getItem("score"));
+          sessionStorage.setItem(
+            "score",
+            parseInt(sessionStorage.getItem("score")) +
+              parseInt(recievedData.addScore)
+          );
+          console.log(recievedData.addScore);
+          console.log(sessionStorage.getItem("score"));
+          Game.displayScores();
           //console.log(Game.player.two.pos);
         }
       }
     });
 
-    console.log("connection!");
+    //console.log("connection!");
 
     peerIdMenu.style.display = "none";
     startButton.style.display = "initial";
@@ -455,29 +498,41 @@ buttonJoin.addEventListener("click", () => {
     } else if (data == "dead") {
       Game.over();
     } else {
-      let resievedData = JSON.parse(data);
-      if (resievedData.usedFields) {
-        Game.player.two.usedFields = resievedData.usedFields;
+      let recievedData = JSON.parse(data);
+      if (recievedData.usedFields) {
+        Game.player.two.usedFields = recievedData.usedFields;
         //console.log(Game.player.two.usedFields);
       }
-      if (resievedData.line) {
-        Game.player.two.line = resievedData.line;
+      if (recievedData.line) {
+        Game.player.two.line = recievedData.line;
         //console.log(Game.player.two.line);
       }
-      if (resievedData.pos) {
-        Game.player.two.pos = resievedData.pos;
+      if (recievedData.pos) {
+        Game.player.two.pos = recievedData.pos;
         //console.log(Game.player.two.pos);
       }
-      if (resievedData.color) {
-        Game.player.two.color = resievedData.color;
+      if (recievedData.color) {
+        Game.player.two.color = recievedData.color;
         //console.log(Game.player.two.pos);
       }
-      if (resievedData.score) {
-        Game.player.two.score = resievedData.score;
+      if (recievedData.score) {
+        Game.player.two.score = recievedData.score;
         //console.log(Game.player.two.pos);
       }
-      if (resievedData.roundScore) {
-        Game.player.two.roundScore = resievedData.roundScore;
+      if (recievedData.roundScore) {
+        Game.player.two.roundScore = recievedData.roundScore;
+        //console.log(Game.player.two.pos);
+      }
+      if (recievedData.addScore) {
+        console.log(sessionStorage.getItem("score"));
+        sessionStorage.setItem(
+          "score",
+          parseInt(sessionStorage.getItem("score")) +
+            parseInt(recievedData.addScore)
+        );
+        console.log(recievedData.addScore);
+        console.log(sessionStorage.getItem("score"));
+        Game.displayScores();
         //console.log(Game.player.two.pos);
       }
     }
