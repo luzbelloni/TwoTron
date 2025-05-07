@@ -32,7 +32,8 @@ class BeamWars {
       this.config.players.one.pos.y - this.config.players.one.D.height,
       this.config.players.one.D.width,
       this.config.players.one.D.height,
-      this.config.players.one.color
+      this.config.players.one.color,
+      this.config.players.one.direction
     );
     this.started = true;
   }
@@ -134,20 +135,20 @@ class BeamWars {
     }
   }
   over() {
-    this.player.dead = true;
+    this.player.die();
   }
 }
 
 //Player Class
 class Beam {
-  constructor(x, y, width, height, color) {
+  constructor(x, y, width, height, color, direction) {
     this.pos = { X: x, Y: y };
     this.tempPos = { X: x, Y: y };
     this.usedFields = [];
     this.D = { width: width, height: height };
     this.stepSpeed = 10;
     this.dead = false;
-    this.direction = "right";
+    this.direction = direction;
     this.color = color;
     this.line = [];
     this.movingProcessActive = false;
@@ -189,8 +190,10 @@ class Beam {
       }
       for (let i = 0; i < this.usedFields.length; i++) {
         if (
-          this.usedFields[i][0] == this.tempPos.X &&
-          this.usedFields[i][1] == this.tempPos.Y
+          (this.usedFields[i][0] == this.tempPos.X &&
+            this.usedFields[i][1] == this.tempPos.Y) ||
+          (this.usedFields[i][0] == this.pos.X &&
+            this.usedFields[i][1] == this.pos.Y)
         ) {
           Game.over();
           return;
@@ -214,6 +217,12 @@ class Beam {
     if (this.dead == false && !this.usedFields.includes(this.tempPos)) {
     }
   }
+  die() {
+    if (this.dead == false) {
+      //window.setTimeout(()=>{}, 0.5 * 1000);
+      this.dead = true;
+    }
+  }
 }
 
 class LineSegment {
@@ -229,6 +238,13 @@ class LineSegment {
     ctx.fillRect(this.pos.X, this.pos.Y, this.D.width, this.D.height);
 
     ctx.restore();
+  }
+}
+
+class HitBox {
+  constructor(x, y, width, height) {
+    this.pos = { X: x, Y: y };
+    this.D = { width: width, height: height };
   }
 }
 

@@ -8,22 +8,14 @@
     "one": {
       "pos": { "x": 10, "y": 400 },
       "D": { "width": 10, "height": 10 },
+      "direction": "right",
       "color": "red"
     },
     "two": {
-      "pos": { "x": 500, "y": 800 },
+      "pos": { "x": 980, "y": 400 },
       "D": { "width": 10, "height": 10 },
-      "color": "green"
-    },
-    "three": {
-      "pos": { "x": 1000, "y": 400 },
-      "D": { "width": 10, "height": 10 },
+      "direction": "left",
       "color": "blue"
-    },
-    "four": {
-      "pos": { "x": 400, "y": 0 },
-      "D": { "width": 10, "height": 10 },
-      "color": "yellow"
     }
   }
 }
