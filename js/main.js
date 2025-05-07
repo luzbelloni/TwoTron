@@ -2,8 +2,8 @@ navigator.vibrate(200);
 
 var canvas = document.getElementById("canvas");
 
-canvas.width = 800;
-canvas.height = 600;
+canvas.width = 1000;
+canvas.height = 800;
 
 var pressedKey;
 document.addEventListener("keydown", (e) => {

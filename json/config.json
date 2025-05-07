@@ -6,22 +6,22 @@
 
   "players": {
     "one": {
-      "pos": { "x": 10, "y": 300 },
+      "pos": { "x": 10, "y": 400 },
       "D": { "width": 10, "height": 10 },
       "color": "red"
     },
     "two": {
-      "pos": { "x": 400, "y": 600 },
+      "pos": { "x": 500, "y": 800 },
       "D": { "width": 10, "height": 10 },
       "color": "green"
     },
     "three": {
-      "pos": { "x": 800, "y": 300 },
+      "pos": { "x": 1000, "y": 400 },
       "D": { "width": 10, "height": 10 },
       "color": "blue"
     },
     "four": {
-      "pos": { "x": 300, "y": 0 },
+      "pos": { "x": 400, "y": 0 },
       "D": { "width": 10, "height": 10 },
       "color": "yellow"
     }
