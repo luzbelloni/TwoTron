@@ -45,7 +45,7 @@ class BeamWars {
       this.initLine();
       this.disapearLine(timestamp);
       this.handleKeyInput();
-      
+
       this.erase();
       this.draw();
     }
@@ -87,12 +87,12 @@ class BeamWars {
   }
   disapearLine(timestamp) {
     //if (this.disapearLastTime == null) {
-      //this.disapearLastTime = timestamp;
+    //this.disapearLastTime = timestamp;
     //}
     //if (timestamp - this.disapearLastTime >= this.config.game.disapearSpeed) {
-      this.player.disapearLine();
-      //console.log(this.player.tempPos);
-      //this.disapearLastTime = timestamp;
+    this.player.disapearLine();
+    //console.log(this.player.tempPos);
+    //this.disapearLastTime = timestamp;
     //}
   }
   handleKeyInput() {
@@ -184,21 +184,21 @@ class Beam {
     }
   }
   move() {
-    if(this.dead == false) {
-    if (this.direction == "right") {
-      this.tempPos.X += this.stepSpeed;
-    }
-    if (this.direction == "left") {
-      this.tempPos.X -= this.stepSpeed;
-    }
-    if (this.direction == "down") {
-      this.tempPos.Y += this.stepSpeed;
-    }
-    if (this.direction == "up") {
-      this.tempPos.Y -= this.stepSpeed;
+    if (this.dead == false) {
+      if (this.direction == "right") {
+        this.tempPos.X += this.stepSpeed;
+      }
+      if (this.direction == "left") {
+        this.tempPos.X -= this.stepSpeed;
+      }
+      if (this.direction == "down") {
+        this.tempPos.Y += this.stepSpeed;
+      }
+      if (this.direction == "up") {
+        this.tempPos.Y -= this.stepSpeed;
+      }
     }
   }
-}
 }
 
 class LineSegment {
