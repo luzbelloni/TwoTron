@@ -436,11 +436,6 @@ var restartButton = document.getElementById("restartButton");
 var roundWinner = document.getElementById("roundWinner");
 var instructions = document.getElementById("instructions");
 
-restartButton.addEventListener("click", () => {
-  conn.send("start");
-  Game.start();
-});
-
 hostButton.addEventListener("click", () => {
   Game.role = "host";
   hostButton.style.display = "none";
@@ -606,6 +601,10 @@ function checkLineDisapeared() {
 
         document.getElementById("gameOverText2").textContent =
           "has won the entire round";
+
+        restartButton.addEventListener("click", () => {
+          location.reload("true");
+        });
       } else {
         if (Game.player.loser == true && Game.role == "host") {
           document.getElementById("gameOverWinner").textContent = "Player 2";
@@ -619,10 +618,15 @@ function checkLineDisapeared() {
         if (Game.player.loser == false && Game.role == "join") {
           document.getElementById("gameOverWinner").textContent = "Player 2";
         }
+        restartButton.addEventListener("click", () => {
+          conn.send("start");
+          Game.start();
+        });
+        if (Game.role == "join") restartButton.style.visibility = "hidden";
       }
 
       gameOver.style.display = "initial";
-      if (Game.role == "join") restartButton.style.visibility = "hidden";
+
       canvas.style.visibility = "hidden";
     }, 1000 * 0.2);
     Game.started = false;
