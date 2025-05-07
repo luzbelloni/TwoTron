@@ -60,8 +60,25 @@ class Beam {
     this.pos = { X: x, Y: y };
     this.D = { width: width, height: height };
     this.color = color;
+    this.line = [];
   }
   draw(ctx) {
+    ctx.save();
+
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.pos.X, this.pos.Y, this.D.width, this.D.height);
+
+    ctx.restore();
+  }
+}
+
+class LineSegment {
+  constructor(x, y, width, height, color){
+    this.pos = {X: x, Y: y};
+    this.D = { width: width, height: height}
+    this.color = color;
+  }
+  draw(){
     ctx.save();
 
     ctx.fillStyle = this.color;
