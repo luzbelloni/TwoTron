@@ -1,5 +1,3 @@
-//test commit
-
 var canvas = document.getElementById("canvas");
 
 canvas.width = 800;
@@ -28,7 +26,7 @@ class BeamWars {
     this.started = true;
   }
 
-  //create gameloop
+  //create gameloopf
   gameLoop() {
     if(this.started){
     this.erase();
