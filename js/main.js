@@ -15,6 +15,8 @@ class BeamWars {
     this.canvas = canvas;
     this.width = this.canvas.width;
     this.height = this.canvas.height;
+    this.logo = new Image();
+    this.logo.src = "assets/twofold_logo.png";
     this.moveLastTime = null;
     this.disapearLastTime = null;
     this.started = false;
@@ -83,6 +85,7 @@ class BeamWars {
   //drawing game
   draw() {
     this.drawBackground();
+    this.drawLogo();
     this.drawBorder();
     this.drawPlayer();
     this.drawLines();
@@ -106,6 +109,14 @@ class BeamWars {
     this.ctx.fillRect(0, this.canvas.height - 10, this.canvas.width, 10);
     this.ctx.fillRect(0, 0, this.canvas.width, 10);
     this.ctx.fillRect(this.canvas.width - 10, 0, 10, this.canvas.height);
+
+    this.ctx.restore();
+  }
+
+  drawLogo() {
+    this.ctx.save();
+
+    this.ctx.drawImage(this.logo, 83, -17, 843, 843);
 
     this.ctx.restore();
   }
